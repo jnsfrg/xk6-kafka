@@ -97,6 +97,12 @@ export enum TIME {
   HOUR = 3600000000000,
 }
 
+/* Time format for use in consume config */
+export enum TIME_FORMATS {
+  RFC3339 = "RFC3339",
+  RFC3339Nano = "RFC3339Nano",
+}
+
 /* SASL configurations for authenticating to Kafka. */
 export interface SASLConfig {
   username: string;
@@ -202,6 +208,7 @@ export interface ReaderConfig {
 /* Configuration for Consume method. */
 export interface ConsumeConfig {
   limit: number;
+  timeFormat: TIME_FORMATS;
 }
 
 /* Configuration for creating a Connector instance for working with topics. */

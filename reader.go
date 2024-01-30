@@ -75,7 +75,8 @@ type ReaderConfig struct {
 }
 
 type ConsumeConfig struct {
-	Limit int64 `json:"limit"`
+	Limit      int64  `json:"limit"`
+	TimeFormat string `json:"timeFormat"`
 }
 
 type Duration struct {
@@ -345,13 +346,20 @@ func (k *Kafka) consume(
 			logger.WithField("error", err).Error(err)
 			return messages
 		}
+		var parsedTime = ""
+		if consumeConfig.TimeFormat == "RFC3339Nano" {
+			parsedTime = msg.Time.Format(time.RFC3339Nano)
+		} else {
+			// Default to RFC3339
+			parsedTime = time.Unix(msg.Time.Unix(), 0).Format(time.RFC3339)
+		}
 
 		// Rest of the fields of a given message
 		message := map[string]interface{}{
 			"topic":         msg.Topic,
 			"partition":     msg.Partition,
 			"offset":        msg.Offset,
-			"time":          time.Unix(msg.Time.Unix(), 0).Format(time.RFC3339),
+			"time":          parsedTime,
 			"highWaterMark": msg.HighWaterMark,
 			"headers":       make(map[string]interface{}),
 		}
