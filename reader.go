@@ -39,6 +39,9 @@ var (
 	PartitionWatchInterval = time.Second * 5
 	JoinGroupBackoff       = time.Second * 5
 	RetentionTime          = time.Hour * 24
+
+	rfc3339     = "RFC3339"
+	rfc3339Nano = "RFC3339Nano"
 )
 
 type ReaderConfig struct {
@@ -347,7 +350,7 @@ func (k *Kafka) consume(
 			return messages
 		}
 		var parsedTime = ""
-		if consumeConfig.TimeFormat == "RFC3339Nano" {
+		if consumeConfig.TimeFormat == rfc3339Nano {
 			parsedTime = msg.Time.Format(time.RFC3339Nano)
 		} else {
 			// Default to RFC3339

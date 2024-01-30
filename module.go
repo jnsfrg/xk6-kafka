@@ -221,4 +221,8 @@ func (m *Module) defineConstants() {
 	mustAddProp("SECOND", int64(time.Second))
 	mustAddProp("MINUTE", int64(time.Minute))
 	mustAddProp("HOUR", int64(time.Hour))
+
+	// Time formats
+	mustAddProp("RFC3339", rfc3339)
+	mustAddProp("RFC3339Nano", rfc3339Nano)
 }
